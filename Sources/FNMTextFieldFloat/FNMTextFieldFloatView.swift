@@ -9,8 +9,11 @@ import UIKit
 
 open class FNMTextFieldFloatView: UIView {
     
+    public weak var delegate: FNMTextFieldFloatDelegate?
+    
     private var textFieldFloat = FNMTextFieldFloat()
-    private var floatingLabel = UILabel(frame: CGRect.zero)
+    private var floatingLabel = UILabel(frame: .zero)
+    private var errorLabel = UILabel(frame: .zero)
     
     
     @IBInspectable
@@ -36,11 +39,21 @@ open class FNMTextFieldFloatView: UIView {
     }
     
     @IBInspectable
-    public var activeBorderColor: UIColor = UIColor.blue {
+    public var activeColor: UIColor = UIColor.blue {
         didSet {
-            textFieldFloat.layer.borderColor = activeBorderColor.cgColor
+            textFieldFloat.layer.borderColor = activeColor.cgColor
         }
     }
+    
+    @IBInspectable
+    public var inactiveColor: UIColor = UIColor.blue {
+        didSet {
+            textFieldFloat.layer.borderColor = inactiveColor.cgColor
+        }
+    }
+    
+    @IBInspectable
+    public var errorColor: UIColor = UIColor.blue
     
     @IBInspectable
     public var activeBorderWidth: CGFloat = .zero {
@@ -58,7 +71,7 @@ open class FNMTextFieldFloatView: UIView {
     }
     
     @IBInspectable
-    public var labelsFont: UIFont = UIFont.systemFont(ofSize: 14) {
+    public var labelsFont: UIFont = UIFont.systemFont(ofSize: 12) {
         didSet {
             floatingLabel.font = labelsFont
             textFieldFloat.font = labelsFont
@@ -96,13 +109,20 @@ open class FNMTextFieldFloatView: UIView {
         
         floatingLabel = UILabel(frame: CGRect.zero)
         floatingLabel.backgroundColor = floatingLabelBackground
-        textFieldFloat.addTarget(self, action: #selector(self.addFloatingLabel), for: .editingDidBegin)
-        textFieldFloat.addTarget(self, action: #selector(self.removeFloatingLabel), for: .editingDidEnd)
+        textFieldFloat.addTarget(self, action: #selector(addFloatingLabel), for: .editingDidBegin)
+        textFieldFloat.addTarget(self, action: #selector(removeFloatingLabel), for: .editingDidEnd)
+        textFieldFloat.addTarget(self, action: #selector(removeFloatingLabel), for: .editingDidEndOnExit)
+        textFieldFloat.addTarget(self, action: #selector(editingChange(_:)), for: .editingChanged)
     
     }
     
+    @objc private func editingChange(_ textField: FNMTextFieldFloat) {
+        delegate?.editingChange(textField, text: textField.text ?? "")
+    }
+
+    
     // Add a floating label to the view on becoming first responder
-    @objc func addFloatingLabel() {
+    @objc private func addFloatingLabel() {
         if textFieldFloat.text?.isEmpty == true {
             self.floatingLabel.textColor = floatingLabelColor
             self.floatingLabel.font = labelsFont
@@ -112,7 +132,7 @@ open class FNMTextFieldFloatView: UIView {
             addSubview(floatingLabel)
             layoutIfNeeded()
             let fontSize = (textFieldFloat.font?.pointSize ?? .zero)/2
-            let widthConstraint = floatingLabel.widthAnchor.constraint(equalToConstant: 2 + floatingLabel.bounds.width + 2)
+            let widthConstraint = floatingLabel.widthAnchor.constraint(equalToConstant: 3 + floatingLabel.bounds.width + 3)
             widthConstraint.priority = .defaultHigh
             NSLayoutConstraint.activate([
                 floatingLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldFloat.totalInsets.left),
@@ -121,23 +141,50 @@ open class FNMTextFieldFloatView: UIView {
             ])
             textFieldFloat.placeholder = ""
             bringSubviewToFront(floatingLabel)
+            textFieldFloat.layer.borderColor = activeColor.cgColor
+        } else {
         }
         textFieldFloat.layoutIfNeeded()
     }
     
-    @objc func removeFloatingLabel() {
+    @objc private func removeFloatingLabel() {
         if textFieldFloat.text?.isEmpty == true {
             UIView.animate(withDuration: 0.13) { [self] in
                 floatingLabel.removeFromSuperview()
                 textFieldFloat.setNeedsDisplay()
             }
             textFieldFloat.placeholder = placeholder
+            textFieldFloat.layer.borderColor = inactiveColor.cgColor
         }
+        delegate?.didEndEditing(textFieldFloat)
     }
     
     open override func layoutSubviews() {
         super.layoutSubviews()
         textFieldFloat.layer.cornerRadius = cornerRadius
+    }
+    
+    public func showError(message: String) {
+        if errorLabel.superview == nil {
+            addSubview(errorLabel)
+            errorLabel.translatesAutoresizingMaskIntoConstraints = false
+            errorLabel.font = UIFont.systemFont(ofSize: 10)
+            let errorLabelPointSize = errorLabel.font.pointSize
+            NSLayoutConstraint.activate([
+                errorLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+                errorLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 3 + errorLabelPointSize)
+            ])
+        }
+        errorLabel.text = message
+        errorLabel.textColor = errorColor
+        textFieldFloat.layer.borderColor = errorColor.cgColor
+        floatingLabel.textColor = errorColor
+    }
+    
+    public func hideError() {
+        errorLabel.removeFromSuperview()
+        textFieldFloat.layer.borderColor = activeColor.cgColor
+        floatingLabel.textColor = activeColor
     }
 }
 
