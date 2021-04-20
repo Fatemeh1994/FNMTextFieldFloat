@@ -15,6 +15,8 @@ open class FNMTextFieldFloatView: UIView {
     private var floatingLabel = UILabel(frame: .zero)
     private var errorLabel = UILabel(frame: .zero)
     
+    public var text: String { textFieldFloat.text ?? "" }
+    
     public var keyboardType: UIKeyboardType {
         get { textFieldFloat.keyboardType }
         set { textFieldFloat.keyboardType = newValue }
