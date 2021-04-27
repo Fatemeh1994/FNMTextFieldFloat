@@ -123,12 +123,13 @@ open class FNMTextFieldFloatView: UIView {
     }
     
     @objc private func editingChange(_ textField: FNMTextFieldFloat) {
-        delegate?.editingChange(textField, text: textField.text ?? "")
+        delegate?.editingChange(textField, view: self, text: textField.text ?? "")
     }
 
     
     // Add a floating label to the view on becoming first responder
     @objc private func addFloatingLabel() {
+        
         if textFieldFloat.text?.isEmpty == true {
             self.floatingLabel.textColor = floatingLabelColor
             self.floatingLabel.font = labelsFont
@@ -148,9 +149,9 @@ open class FNMTextFieldFloatView: UIView {
             textFieldFloat.placeholder = ""
             bringSubviewToFront(floatingLabel)
             textFieldFloat.layer.borderColor = activeColor.cgColor
-        } else {
-        }
+        } else { }
         textFieldFloat.layoutIfNeeded()
+        delegate?.didBeginEditing(textFieldFloat, view: self)
     }
     
     @objc private func removeFloatingLabel() {
@@ -162,7 +163,7 @@ open class FNMTextFieldFloatView: UIView {
             textFieldFloat.placeholder = placeholder
             textFieldFloat.layer.borderColor = inactiveColor.cgColor
         }
-        delegate?.didEndEditing(textFieldFloat)
+        delegate?.didEndEditing(textFieldFloat, view: self)
     }
     
     open override func layoutSubviews() {

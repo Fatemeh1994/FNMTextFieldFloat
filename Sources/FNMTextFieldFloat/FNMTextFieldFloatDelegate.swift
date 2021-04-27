@@ -8,6 +8,7 @@
 import UIKit
 
 public protocol FNMTextFieldFloatDelegate: class {
-    func didEndEditing(_ textField: FNMTextFieldFloat)
-    func editingChange(_ textField: FNMTextFieldFloat, text: String)
+    func didBeginEditing(_ textField: FNMTextFieldFloat, view: FNMTextFieldFloatView)
+    func didEndEditing(_ textField: FNMTextFieldFloat, view: FNMTextFieldFloatView)
+    func editingChange(_ textField: FNMTextFieldFloat, view: FNMTextFieldFloatView, text: String)
 }
