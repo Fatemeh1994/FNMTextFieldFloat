@@ -92,6 +92,11 @@ open class FNMTextFieldFloatView: UIView {
     public var isSecure: Bool = false {
         didSet {
             textFieldFloat.isSecureTextEntry = isSecure
+            if isSecure {
+                textFieldFloat.addViewPasswordButton()
+            } else {
+                textFieldFloat.removeViewPasswordButton()
+            }
         }
     }
     

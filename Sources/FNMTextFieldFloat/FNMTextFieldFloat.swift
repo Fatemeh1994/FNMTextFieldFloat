@@ -15,13 +15,18 @@ public class FNMTextFieldFloat: UITextField {
     var imageView = UIImageView(frame: CGRect.zero)
     
     func addViewPasswordButton() {
-        self.button.setImage(UIImage(named: "ic_reveal"), for: .normal)
+        self.button.setImage(FNMImages.show.image, for: .normal)
         self.button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         self.button.frame = CGRect(x: 0, y: 16, width: 22, height: 16)
         self.button.clipsToBounds = true
         self.rightView = self.button
         self.rightViewMode = .always
         self.button.addTarget(self, action: #selector(self.enablePasswordVisibilityToggle), for: .touchUpInside)
+    }
+    
+    func removeViewPasswordButton() {
+        self.rightView = nil
+        self.rightViewMode = .never
     }
     
     func addImage(image: UIImage) {
@@ -42,25 +47,48 @@ public class FNMTextFieldFloat: UITextField {
     @objc func enablePasswordVisibilityToggle() {
         isSecureTextEntry.toggle()
         if isSecureTextEntry {
-            self.button.setImage(UIImage(named: "ic_show"), for: .normal)
-        }else{
-            self.button.setImage(UIImage(named: "ic_hide"), for: .normal)
+            self.button.setImage(FNMImages.show.image, for: .normal)
+        } else {
+            self.button.setImage(FNMImages.hide.image, for: .normal)
         }
     }
     
-    func setInsets(for bounds: CGRect) -> CGRect {
-        bounds.inset(by: totalInsets)
+    private func setInsets(forBounds bounds: CGRect) -> CGRect {
+
+        var totalInsets = totalInsets //property in you subClass
+
+        if let leftView = leftView  { totalInsets.left += leftView.frame.origin.x }
+        if let rightView = rightView { totalInsets.right += rightView.bounds.size.width }
+
+        return bounds.inset(by: totalInsets)
     }
-    
-    public override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        setInsets(for: bounds)
-    }
-    
+
     public override func textRect(forBounds bounds: CGRect) -> CGRect {
-        setInsets(for: bounds)
+        return setInsets(forBounds: bounds).inset(by: .init(top: .zero, left: 3, bottom: .zero, right: 4))
+    }
+
+    public override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return setInsets(forBounds: bounds).inset(by: .init(top: .zero, left: 3, bottom: .zero, right: 4))
+    }
+
+    public override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return setInsets(forBounds: bounds).inset(by: .init(top: .zero, left: 3, bottom: .zero, right: 4))
+    }
+
+    public override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+
+        var rect = super.rightViewRect(forBounds: bounds)
+        rect.origin.x -= totalInsets.right
+
+        return rect
+    }
+
+    public override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+
+        var rect = super.leftViewRect(forBounds: bounds)
+        rect.origin.x += totalInsets.left
+
+        return rect
     }
     
-    public override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        setInsets(for: bounds)
-    }
 }
