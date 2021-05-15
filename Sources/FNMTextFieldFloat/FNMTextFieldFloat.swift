@@ -55,7 +55,7 @@ public class FNMTextFieldFloat: UITextField {
     
     private func setInsets(forBounds bounds: CGRect) -> CGRect {
 
-        var totalInsets = totalInsets //property in you subClass
+        var totalInsets = self.totalInsets //property in you subClass
 
         if let leftView = leftView  { totalInsets.left += leftView.frame.origin.x }
         if let rightView = rightView { totalInsets.right += rightView.bounds.size.width }
