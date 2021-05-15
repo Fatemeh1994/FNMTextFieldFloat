@@ -15,7 +15,7 @@ public class FNMTextFieldFloat: UITextField {
     var imageView = UIImageView(frame: CGRect.zero)
     
     func addViewPasswordButton() {
-        self.button.setImage(FNMImages.show.image, for: .normal)
+        self.button.setImage(FNMImages.Show.image, for: .normal)
         self.button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         self.button.frame = CGRect(x: 0, y: 16, width: 22, height: 16)
         self.button.clipsToBounds = true
@@ -47,9 +47,9 @@ public class FNMTextFieldFloat: UITextField {
     @objc func enablePasswordVisibilityToggle() {
         isSecureTextEntry.toggle()
         if isSecureTextEntry {
-            self.button.setImage(FNMImages.show.image, for: .normal)
+            self.button.setImage(FNMImages.Show.image, for: .normal)
         } else {
-            self.button.setImage(FNMImages.hide.image, for: .normal)
+            self.button.setImage(FNMImages.Hide.image, for: .normal)
         }
     }
     

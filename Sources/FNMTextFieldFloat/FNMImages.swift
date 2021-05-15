@@ -8,7 +8,7 @@
 import UIKit
 
 enum FNMImages: String {
-    case hide, show
+    case Hide, Show
     
     var image: UIImage {
         UIImage(named: self.rawValue, in: .module, compatibleWith: nil)!
