@@ -11,7 +11,7 @@ open class FNMTextFieldFloatView: UIView {
     
     public weak var delegate: FNMTextFieldFloatDelegate?
     
-    private var textFieldFloat = FNMTextFieldFloat()
+    public var textFieldFloat = FNMTextFieldFloat()
     private var floatingLabel = UILabel(frame: .zero)
     private var errorLabel = UILabel(frame: .zero)
     
