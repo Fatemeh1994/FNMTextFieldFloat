@@ -24,6 +24,15 @@ public class FNMTextFieldFloat: UITextField {
         self.button.addTarget(self, action: #selector(self.enablePasswordVisibilityToggle), for: .touchUpInside)
     }
     
+    func addRightButtonImage(_ image: UIImage?) {
+        self.button.setImage(image, for: .normal)
+        self.button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.button.frame = CGRect(x: 0, y: 16, width: 22, height: 16)
+        self.button.clipsToBounds = true
+        self.rightView = self.button
+        self.rightViewMode = .always
+    }
+    
     func removeViewPasswordButton() {
         self.rightView = nil
         self.rightViewMode = .never

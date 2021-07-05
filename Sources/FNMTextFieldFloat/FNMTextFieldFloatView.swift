@@ -100,6 +100,13 @@ open class FNMTextFieldFloatView: UIView {
         }
     }
     
+    @IBInspectable
+    public var rightImageButton: UIImage? {
+        didSet {
+            textFieldFloat.addRightButtonImage(rightImageButton)
+        }
+    }
+    
     override public init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -134,10 +141,32 @@ open class FNMTextFieldFloatView: UIView {
         delegate?.editingChange(textField, view: self, text: textField.text ?? "")
     }
 
+    public func addForceFloatingLabel() {
+        guard floatingLabel.superview == nil else { return }
+        self.floatingLabel.textColor = floatingLabelColor
+        self.floatingLabel.font = labelsFont
+        self.floatingLabel.text = placeholder
+        self.floatingLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.floatingLabel.textAlignment = .center
+        addSubview(floatingLabel)
+        layoutIfNeeded()
+        let fontSize = (textFieldFloat.font?.pointSize ?? .zero)/2
+        let widthConstraint = floatingLabel.widthAnchor.constraint(equalToConstant: 3 + floatingLabel.bounds.width + 3)
+        widthConstraint.priority = .defaultHigh
+        NSLayoutConstraint.activate([
+            floatingLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textFieldFloat.totalInsets.left),
+            floatingLabel.bottomAnchor.constraint(equalTo: topAnchor, constant: fontSize),
+            widthConstraint
+        ])
+        textFieldFloat.placeholder = ""
+        bringSubviewToFront(floatingLabel)
+        textFieldFloat.layer.borderColor = activeColor.cgColor
+        textFieldFloat.layoutIfNeeded()
+    }
+    
     
     // Add a floating label to the view on becoming first responder
     @objc private func addFloatingLabel() {
-        
         if textFieldFloat.text?.isEmpty == true {
             self.floatingLabel.textColor = floatingLabelColor
             self.floatingLabel.font = labelsFont
