@@ -107,6 +107,13 @@ open class FNMTextFieldFloatView: UIView {
         }
     }
     
+    @IBInspectable
+    public var leftImageButton: UIImage? {
+        didSet {
+            textFieldFloat.addLeftButtonImage(leftImageButton)
+        }
+    }
+    
     override public init(frame: CGRect) {
         super.init(frame: frame)
         setup()
