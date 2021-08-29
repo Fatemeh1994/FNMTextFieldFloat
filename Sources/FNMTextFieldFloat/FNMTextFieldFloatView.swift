@@ -14,6 +14,8 @@ open class FNMTextFieldFloatView: UIView {
     public var textFieldFloat = FNMTextFieldFloat()
     private var floatingLabel = UILabel(frame: .zero)
     private var errorLabel = UILabel(frame: .zero)
+    private var isErrorLabelVisible: Bool = false
+    public var isErrorVisible: Bool { isErrorLabelVisible }
     
     public var text: String {
         get { textFieldFloat.text ?? "" }
@@ -226,6 +228,7 @@ open class FNMTextFieldFloatView: UIView {
                 errorLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
                 errorLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 3 + errorLabelPointSize)
             ])
+            isErrorLabelVisible = true
         }
         errorLabel.text = message
         errorLabel.textColor = errorColor
@@ -237,6 +240,7 @@ open class FNMTextFieldFloatView: UIView {
         errorLabel.removeFromSuperview()
         textFieldFloat.layer.borderColor = activeColor.cgColor
         floatingLabel.textColor = activeColor
+        isErrorLabelVisible = false
     }
 }
 
