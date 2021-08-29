@@ -142,6 +142,7 @@ open class FNMTextFieldFloatView: UIView {
     
     private func setup() {
         rootStackView.axis = .vertical
+        rootStackView.spacing = 4
         clipsToBounds = false
         addSubview(rootStackView)
         rootStackView.translatesAutoresizingMaskIntoConstraints = false
