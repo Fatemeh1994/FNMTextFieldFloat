@@ -14,8 +14,9 @@ open class FNMTextFieldFloatView: UIView {
     public var textFieldFloat = FNMTextFieldFloat()
     private var floatingLabel = UILabel(frame: .zero)
     private var errorLabel = UILabel(frame: .zero)
-    private var isErrorLabelVisible: Bool = false
-    public var isErrorVisible: Bool { isErrorLabelVisible }
+    public var isErrorVisible: Bool { !errorLabel.isHidden }
+    
+    private lazy var rootStackView = UIStackView(arrangedSubviews: [textFieldFloat, errorLabel])
     
     public var fieldInset: UIEdgeInsets {
         get { textFieldFloat.totalInsets }
@@ -137,14 +138,15 @@ open class FNMTextFieldFloatView: UIView {
     }
     
     private func setup() {
+        rootStackView.axis = .vertical
         clipsToBounds = false
-        addSubview(textFieldFloat)
-        textFieldFloat.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(rootStackView)
+        rootStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            textFieldFloat.topAnchor.constraint(equalTo: topAnchor),
-            textFieldFloat.bottomAnchor.constraint(equalTo: bottomAnchor),
-            textFieldFloat.leadingAnchor.constraint(equalTo: leadingAnchor),
-            textFieldFloat.trailingAnchor.constraint(equalTo: trailingAnchor)
+            rootStackView.topAnchor.constraint(equalTo: topAnchor),
+            rootStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            rootStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            rootStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
         
         floatingLabel = UILabel(frame: CGRect.zero)
@@ -228,18 +230,7 @@ open class FNMTextFieldFloatView: UIView {
     }
     
     public func showError(message: String) {
-        if errorLabel.superview == nil {
-            addSubview(errorLabel)
-            errorLabel.translatesAutoresizingMaskIntoConstraints = false
-            let errorLabelPointSize = errorLabel.font.pointSize
-            NSLayoutConstraint.activate([
-                errorLabel.topAnchor.constraint(equalTo: textFieldFloat.bottomAnchor, constant: 4),
-                errorLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .zero),
-                errorLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: .zero),
-                errorLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 3 + errorLabelPointSize)
-            ])
-            isErrorLabelVisible = true
-        }
+        errorLabel.isHidden = false
         errorLabel.text = message
         errorLabel.textColor = errorColor
         textFieldFloat.layer.borderColor = errorColor.cgColor
@@ -247,10 +238,9 @@ open class FNMTextFieldFloatView: UIView {
     }
     
     public func hideError() {
-        errorLabel.removeFromSuperview()
+        errorLabel.isHidden = true
         textFieldFloat.layer.borderColor = activeColor.cgColor
         floatingLabel.textColor = activeColor
-        isErrorLabelVisible = false
     }
 }
 
