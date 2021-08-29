@@ -234,8 +234,8 @@ open class FNMTextFieldFloatView: UIView {
             let errorLabelPointSize = errorLabel.font.pointSize
             NSLayoutConstraint.activate([
                 errorLabel.topAnchor.constraint(equalTo: textFieldFloat.bottomAnchor, constant: 4),
-                errorLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-                errorLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+                errorLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .zero),
+                errorLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: .zero),
                 errorLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 3 + errorLabelPointSize)
             ])
             isErrorLabelVisible = true
