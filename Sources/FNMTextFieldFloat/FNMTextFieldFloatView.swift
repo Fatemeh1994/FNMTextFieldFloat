@@ -28,8 +28,8 @@ open class FNMTextFieldFloatView: UIView {
         set { errorLabel.font = newValue }
     }
     
-    public var text: String {
-        get { textFieldFloat.text ?? "" }
+    public var text: String? {
+        get { textFieldFloat.text }
         set {
             addForceFloatingLabel()
             textFieldFloat.text = newValue
