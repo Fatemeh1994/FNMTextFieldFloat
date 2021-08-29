@@ -30,7 +30,10 @@ open class FNMTextFieldFloatView: UIView {
     
     public var text: String {
         get { textFieldFloat.text ?? "" }
-        set { textFieldFloat.text = newValue }
+        set {
+            addForceFloatingLabel()
+            textFieldFloat.text = newValue
+        }
     }
     
     public var keyboardType: UIKeyboardType {
