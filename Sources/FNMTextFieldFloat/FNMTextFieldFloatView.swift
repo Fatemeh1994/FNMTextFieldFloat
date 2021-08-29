@@ -17,9 +17,9 @@ open class FNMTextFieldFloatView: UIView {
     private var isErrorLabelVisible: Bool = false
     public var isErrorVisible: Bool { isErrorLabelVisible }
     
-    convenience init(inset: UIEdgeInsets = .init(top: .zero, left: 20, bottom: .zero, right: 20)) {
-        self.init(frame: .zero)
-        textFieldFloat.totalInsets = inset
+    public var fieldInset: UIEdgeInsets {
+        get { textFieldFloat.totalInsets }
+        set { textFieldFloat.totalInsets = newValue }
     }
     
     public var errorLabelFont: UIFont {
