@@ -17,6 +17,11 @@ open class FNMTextFieldFloatView: UIView {
     private var isErrorLabelVisible: Bool = false
     public var isErrorVisible: Bool { isErrorLabelVisible }
     
+    public var errorLabelFont: UIFont {
+        get { errorLabel.font }
+        set { errorLabel.font = newValue }
+    }
+    
     public var text: String {
         get { textFieldFloat.text ?? "" }
         set { textFieldFloat.text = newValue }
@@ -221,7 +226,6 @@ open class FNMTextFieldFloatView: UIView {
         if errorLabel.superview == nil {
             addSubview(errorLabel)
             errorLabel.translatesAutoresizingMaskIntoConstraints = false
-            errorLabel.font = UIFont.systemFont(ofSize: 10)
             let errorLabelPointSize = errorLabel.font.pointSize
             NSLayoutConstraint.activate([
                 errorLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
