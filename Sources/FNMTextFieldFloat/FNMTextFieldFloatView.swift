@@ -244,7 +244,7 @@ open class FNMTextFieldFloatView: UIView {
     public func hideError() {
         errorLabel.isHidden = true
         textFieldFloat.layer.borderColor = activeColor.cgColor
-        floatingLabel.textColor = activeColor
+        floatingLabel.textColor = floatingLabelColor
     }
 }
 
