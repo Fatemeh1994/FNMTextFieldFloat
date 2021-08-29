@@ -31,8 +31,8 @@ open class FNMTextFieldFloatView: UIView {
     public var text: String? {
         get { textFieldFloat.text }
         set {
-            addForceFloatingLabel()
             textFieldFloat.text = newValue
+            addForceFloatingLabel()
         }
     }
     
@@ -167,7 +167,7 @@ open class FNMTextFieldFloatView: UIView {
     }
 
     public func addForceFloatingLabel() {
-        guard floatingLabel.superview == nil else { return }
+        guard floatingLabel.superview == nil, text?.isEmpty == false else { return }
         self.floatingLabel.textColor = floatingLabelColor
         self.floatingLabel.font = labelsFont
         self.floatingLabel.text = placeholder
