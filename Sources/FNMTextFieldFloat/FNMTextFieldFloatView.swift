@@ -141,6 +141,7 @@ open class FNMTextFieldFloatView: UIView {
     }
     
     private func setup() {
+        errorLabel.isHidden = true
         rootStackView.axis = .vertical
         rootStackView.spacing = 4
         clipsToBounds = false
